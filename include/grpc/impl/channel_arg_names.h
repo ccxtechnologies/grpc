@@ -288,6 +288,8 @@
     Default value is -1(kReadBufferSizeUnset) indicating that the system will
     decide the buffer size. Range varies from 0 to INT_MAX. */
 #define GRPC_ARG_TCP_RECEIVE_BUFFER_SIZE "grpc.tcp_receive_buffer_size"
+/* Bind this socket to a particular device, SO_BINDTODEVICE. */
+#define GRPC_ARG_SOCKET_DEVICE "grpc.socket_device"
 /* Timeout in milliseconds to use for calls to the grpclb load balancer.
    If 0 or unset, the balancer calls will have no deadline. Defaults to 0 ms. */
 #define GRPC_ARG_GRPCLB_CALL_TIMEOUT_MS "grpc.grpclb_call_timeout_ms"
