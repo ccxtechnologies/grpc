@@ -111,6 +111,12 @@ static grpc_error_handle prepare_socket(
     err = grpc_set_socket_rcvbuf(fd, options.tcp_receive_buffer_size);
     if (!err.ok()) goto error;
   }
+
+  if (options.socket_device != options.kDeviceNotSet) {
+    err = grpc_set_socket_device(fd, options.socket_device);
+    if (!err.ok()) goto error;
+  }
+
   if (!grpc_is_unix_socket(addr) && !grpc_is_vsock(addr)) {
     err = grpc_set_socket_low_latency(fd, 1);
     if (!err.ok()) goto error;
