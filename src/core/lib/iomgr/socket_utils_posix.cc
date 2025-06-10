@@ -79,6 +79,9 @@ PosixTcpOptions TcpOptionsFromEndpointConfig(const EndpointConfig& config) {
   options.tcp_receive_buffer_size =
       AdjustValue(PosixTcpOptions::kReadBufferSizeUnset, 0, INT_MAX,
                   config.GetInt(GRPC_ARG_TCP_RECEIVE_BUFFER_SIZE));
+  options.socket_device =
+      AdjustValue(PosixTcpOptions::kDeviceNotSet, 0, INT_MAX,
+                  config.GetInt(GRPC_ARG_SOCKET_DEVICE));
   options.tcp_tx_zero_copy_enabled =
       (AdjustValue(PosixTcpOptions::kZerocpTxEnabledDefault, 0, 1,
                    config.GetInt(GRPC_ARG_TCP_TX_ZEROCOPY_ENABLED)) != 0);

@@ -261,6 +261,8 @@
   "grpc.experimental.tcp_tx_zerocopy_max_simultaneous_sends"
 /* Overrides the TCP socket receive buffer size, SO_RCVBUF. */
 #define GRPC_ARG_TCP_RECEIVE_BUFFER_SIZE "grpc.tcp_receive_buffer_size"
+/* Bind this socket to a particular device, SO_BINDTODEVICE. */
+#define GRPC_ARG_SOCKET_DEVICE "grpc.socket_device"
 /* Timeout in milliseconds to use for calls to the grpclb load balancer.
    If 0 or unset, the balancer calls will have no deadline. */
 #define GRPC_ARG_GRPCLB_CALL_TIMEOUT_MS "grpc.grpclb_call_timeout_ms"
