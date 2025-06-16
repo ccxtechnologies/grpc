@@ -202,7 +202,7 @@ grpc_error_handle grpc_set_socket_sndbuf(int fd, int buffer_size_bytes);
 grpc_error_handle grpc_set_socket_rcvbuf(int fd, int buffer_size_bytes);
 
 // Tries to set the socket's device.
-grpc_error_handle grpc_set_socket_device(int fd, int device);
+grpc_error_handle grpc_set_socket_device(int fd, std::string device);
 
 // Tries to set the socket using a grpc_socket_mutator
 grpc_error_handle grpc_set_socket_with_mutator(int fd, grpc_fd_usage usage,
