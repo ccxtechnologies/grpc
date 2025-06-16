@@ -51,6 +51,7 @@ struct PosixTcpOptions {
   // Let the system decide the proper buffer size.
   static constexpr int kReadBufferSizeUnset = -1;
   static constexpr int kDscpNotSet = -1;
+  const std::string kDeviceNotSet = std::string();
   int tcp_read_chunk_size = kDefaultReadChunkSize;
   int tcp_min_read_chunk_size = kDefaultMinReadChunksize;
   int tcp_max_read_chunk_size = kDefaultMaxReadChunksize;
@@ -58,13 +59,13 @@ struct PosixTcpOptions {
   int tcp_tx_zerocopy_max_simultaneous_sends = kDefaultMaxSends;
   int tcp_receive_buffer_size = kReadBufferSizeUnset;
   bool tcp_tx_zero_copy_enabled = kZerocpTxEnabledDefault;
+  std::string socket_device = kDeviceNotSet;
   int keep_alive_time_ms = 0;
   int keep_alive_timeout_ms = 0;
   int dscp = kDscpNotSet;
   bool expand_wildcard_addrs = false;
   bool allow_reuse_port = false;
   RefCountedPtr<ResourceQuota> resource_quota;
-  std::string socket_device = std::string();
   struct grpc_socket_mutator* socket_mutator = nullptr;
   PosixTcpOptions() = default;
   // Move ctor

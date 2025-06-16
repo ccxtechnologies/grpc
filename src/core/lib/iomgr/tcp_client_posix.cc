@@ -111,12 +111,6 @@ static grpc_error_handle prepare_socket(
     err = grpc_set_socket_rcvbuf(fd, options.tcp_receive_buffer_size);
     if (!err.ok()) goto error;
   }
-
-  if (options.socket_device != options.kDeviceNotSet) {
-    err = grpc_set_socket_device(fd, options.socket_device);
-    if (!err.ok()) goto error;
-  }
-
   if (!grpc_is_unix_socket(addr) && !grpc_is_vsock(addr)) {
     err = grpc_set_socket_low_latency(fd, 1);
     if (!err.ok()) goto error;
@@ -129,6 +123,11 @@ static grpc_error_handle prepare_socket(
   }
   err = grpc_set_socket_no_sigpipe_if_possible(fd);
   if (!err.ok()) goto error;
+
+  if (options.socket_device != options.kDeviceNotSet) {
+    err = grpc_set_socket_device(fd, options.socket_device);
+    if (!err.ok()) goto error;
+  }
 
   err = grpc_apply_socket_mutator_in_args(fd, GRPC_FD_CLIENT_CONNECTION_USAGE,
                                           options);
