@@ -152,10 +152,6 @@ grpc_error_handle grpc_set_socket_rcvbuf(int fd, int buffer_size_bytes) {
              : GRPC_OS_ERROR(errno, "setsockopt(SO_RCVBUF)");
 }
 
-grpc_error_handle grpc_set_socket_device(int fd, int device) {
-  return absl::OkStatus();
-}
-
 // set a socket to close on exec
 grpc_error_handle grpc_set_socket_cloexec(int fd, int close_on_exec) {
   int oldflags = fcntl(fd, F_GETFD, 0);
@@ -415,6 +411,10 @@ grpc_error_handle grpc_set_socket_tcp_user_timeout(
         << "TCP_USER_TIMEOUT not supported for this platform";
   }
   return absl::OkStatus();
+}
+
+grpc_error_handle grpc_set_socket_device(int fd, std::string device) {
+    return absl::OkStatus();
 }
 
 // set a socket using a grpc_socket_mutator
