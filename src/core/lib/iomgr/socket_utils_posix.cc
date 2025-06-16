@@ -79,9 +79,6 @@ PosixTcpOptions TcpOptionsFromEndpointConfig(const EndpointConfig& config) {
   options.tcp_receive_buffer_size =
       AdjustValue(PosixTcpOptions::kReadBufferSizeUnset, 0, INT_MAX,
                   config.GetInt(GRPC_ARG_TCP_RECEIVE_BUFFER_SIZE));
-  options.socket_device =
-      AdjustValue(PosixTcpOptions::kDeviceNotSet, 0, INT_MAX,
-                  config.GetInt(GRPC_ARG_SOCKET_DEVICE));
   options.tcp_tx_zero_copy_enabled =
       (AdjustValue(PosixTcpOptions::kZerocpTxEnabledDefault, 0, 1,
                    config.GetInt(GRPC_ARG_TCP_TX_ZEROCOPY_ENABLED)) != 0);
@@ -104,6 +101,11 @@ PosixTcpOptions TcpOptionsFromEndpointConfig(const EndpointConfig& config) {
   options.tcp_read_chunk_size = grpc_core::Clamp(
       options.tcp_read_chunk_size, options.tcp_min_read_chunk_size,
       options.tcp_max_read_chunk_size);
+
+  auto socket_device = config.GetString(GRPC_ARG_SOCKET_DEVICE);
+  if (socket_device.has_value()) {
+    options.socket_device = std::string(socket_device.value());
+  }
 
   value = config.GetVoidPointer(GRPC_ARG_RESOURCE_QUOTA);
   if (value != nullptr) {
