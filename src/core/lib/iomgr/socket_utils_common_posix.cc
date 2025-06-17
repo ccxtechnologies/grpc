@@ -415,7 +415,11 @@ grpc_error_handle grpc_set_socket_tcp_user_timeout(
 }
 
 grpc_error_handle grpc_set_socket_device(int fd, std::string device) {
-    return absl::OkStatus();
+  const char *name = device.c_str();
+  if (0 != setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, name, strlen(name))) {
+    return GRPC_OS_ERROR(errno, "setsockopt(SO_BINDTODEVICE)");
+  }
+  return absl::OkStatus();
 }
 
 // set a socket using a grpc_socket_mutator
