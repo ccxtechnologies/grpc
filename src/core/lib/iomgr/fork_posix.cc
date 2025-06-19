@@ -68,7 +68,7 @@ void grpc_prefork() {
     return;
   }
   if (!grpc_core::Fork::BlockExecCtx()) {
-    LOG(INFO) << "Other threads are currently calling into gRPC, skipping "
+    VLOG(2) << "Other threads are currently calling into gRPC, skipping "
                  "fork() handlers";
     return;
   }
