@@ -28,8 +28,7 @@ def run():
     # of the code.
     print("Will try to greet world ...")
     with grpc.insecure_channel(
-            "localhost:50051",
-            options=(("grpc.socket_device", "lo"),)
+        "localhost:50051", options=(("grpc.socket_device", "lo"),)
     ) as channel:
         stub = helloworld_pb2_grpc.GreeterStub(channel)
         response = stub.SayHello(helloworld_pb2.HelloRequest(name="you"))
