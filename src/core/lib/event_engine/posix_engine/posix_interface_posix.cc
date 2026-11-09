@@ -189,6 +189,17 @@ absl::Status SetSocketRcvBuf(int fd, int buffer_size_bytes) {
                                          grpc_core::StrError(errno)));
 }
 
+// Tries to set the socket's device.
+absl::Status SetSocketDevice(int fd, std::string device) {
+  const char* name = device.c_str();
+  if (0 != setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, name, strlen(name))) {
+    return absl::Status(absl::StatusCode::kInternal,
+                        absl::StrCat("setsockopt(SO_BINDTODEVICE): ",
+                                     grpc_core::StrError(errno)));
+  }
+  return absl::OkStatus();
+}
+
 // get max listen queue size on linux
 int InitMaxAcceptQueueSize() {
   int n = SOMAXCONN;
@@ -1014,6 +1025,9 @@ absl::Status EventEnginePosixInterface::PrepareTcpClientSocket(
     TrySetSocketTcpUserTimeout(fd, options, true);
   }
   GRPC_RETURN_IF_ERROR(InternalSetSocketNoSigpipeIfPossible(fd));
+  if (options.socket_device != options.kDeviceNotSet) {
+    GRPC_RETURN_IF_ERROR(SetSocketDevice(fd, options.socket_device));
+  }
   GRPC_RETURN_IF_ERROR(InternalApplySocketMutatorInOptions(
       fd, GRPC_FD_CLIENT_CONNECTION_USAGE, options));
   // No errors. Set close_fd to false to ensure the socket is

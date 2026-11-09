@@ -122,6 +122,11 @@ PosixTcpOptions TcpOptionsFromEndpointConfig(const EndpointConfig& config) {
       options.tcp_read_chunk_size, options.tcp_min_read_chunk_size,
       options.tcp_max_read_chunk_size);
 
+  auto socket_device = config.GetString(GRPC_ARG_SOCKET_DEVICE);
+  if (socket_device.has_value()) {
+    options.socket_device = std::string(socket_device.value());
+  }
+
   value = config.GetVoidPointer(GRPC_ARG_RESOURCE_QUOTA);
   if (value != nullptr) {
     options.resource_quota =
